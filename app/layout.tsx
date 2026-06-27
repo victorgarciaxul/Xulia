@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="es" className="h-full">
-      <body className={`${inter.className} h-full bg-[#0f0f13] text-slate-200 antialiased`}>
+      <body className={`${inter.className} h-full bg-[#f4f4f6] text-[#111111] antialiased`}>
         {children}
       </body>
     </html>

@@ -41,7 +41,7 @@ export async function checkQuota(userId: string, modelId: string): Promise<Quota
     // Caer al modelo gratuito por defecto en vez de bloquear
     return {
       allowed: true,
-      fallbackModel: 'meta-llama/llama-3.1-8b-instruct:free',
+      fallbackModel: 'nvidia/nemotron-nano-9b-v2:free',
       reason: 'Modelo cambiado al gratuito por defecto (sin acceso a modelos de pago).',
     }
   }
@@ -50,7 +50,7 @@ export async function checkQuota(userId: string, modelId: string): Promise<Quota
   if (quota.monthly_budget_usd > 0 && quota.spend_this_month_usd >= quota.monthly_budget_usd) {
     return {
       allowed: true,
-      fallbackModel: 'meta-llama/llama-3.1-8b-instruct:free',
+      fallbackModel: 'nvidia/nemotron-nano-9b-v2:free',
       reason: 'Presupuesto mensual agotado. Cambiado a modelo gratuito hasta el próximo mes.',
     }
   }

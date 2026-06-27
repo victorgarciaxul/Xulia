@@ -7,6 +7,8 @@ export interface Agent {
   system_prompt: string
   use_rag: boolean
   min_role: 'basic' | 'standard' | 'advanced' | 'admin'
+  capabilities: string[]
+  examples: string[]
 }
 
 export const AGENTS: Agent[] = [
@@ -18,6 +20,8 @@ export const AGENTS: Agent[] = [
     category: 'comercial',
     use_rag: true,
     min_role: 'basic',
+    capabilities: ['Propuestas económicas y técnicas', 'Análisis de clientes y sectores', 'Emails y comunicaciones comerciales', 'Cálculo de rentabilidad de proyectos', 'Argumentarios de venta'],
+    examples: ['Genera una propuesta para un ayuntamiento que quiere un plan de comunicación anual con presupuesto de 40.000€', 'Redacta un email de seguimiento para un cliente que no responde desde hace 2 semanas', 'Analiza el perfil de una empresa del sector sanitario para una primera reunión comercial'],
     system_prompt: `Eres el Asistente Comercial de XULIA, especializado en comunicación institucional y marketing digital.
 
 Tu misión es ayudar al equipo comercial a:
@@ -39,6 +43,8 @@ Si tienes acceso al conocimiento corporativo (RAG), úsalo para personalizar con
     category: 'marketing',
     use_rag: true,
     min_role: 'basic',
+    capabilities: ['Estrategias de marketing digital', 'Calendarios editoriales', 'Análisis de campañas e informes', 'Investigación de tendencias y competidores', 'Ideas creativas para campañas'],
+    examples: ['Crea un plan de marketing para el lanzamiento de un nuevo cliente del sector salud', 'Analiza los resultados de nuestra última campaña en redes y dame recomendaciones de mejora', 'Genera ideas para una campaña de verano para una empresa de turismo rural'],
     system_prompt: `Eres el Asistente de Marketing de XULIA, experto en marketing digital, comunicación de marca y análisis de campañas.
 
 Tu misión es ayudar al equipo de marketing a:
@@ -59,6 +65,8 @@ Cuando generes ideas, ofrece siempre una variedad de opciones con justificación
     category: 'social',
     use_rag: true,
     min_role: 'basic',
+    capabilities: ['Copies para Instagram, LinkedIn, Twitter/X, TikTok', 'Hashtags estratégicos', 'Calendarios editoriales mensuales', 'Adaptación de tono por plataforma', 'Ideas de contenido y formatos'],
+    examples: ['Crea 5 posts de Instagram para una clínica dental con tono cercano y profesional', 'Genera el calendario editorial de julio para una empresa de moda sostenible', 'Adapta este artículo del blog a un post de LinkedIn con gancho emocional'],
     system_prompt: `Eres el Asistente de Social Media de XULIA, especializado en creación de contenido para redes sociales.
 
 Tu misión es ayudar al equipo de social media a:
@@ -81,6 +89,8 @@ Twitter/X: conciso, directo, actualidad.`,
     category: 'eventos',
     use_rag: true,
     min_role: 'basic',
+    capabilities: ['Planes de producción con timeline', 'Briefings para proveedores', 'Estimación de presupuestos', 'Comunicaciones para asistentes', 'Informes post-evento'],
+    examples: ['Planifica una gala de premios para 200 personas con presupuesto de 30.000€', 'Redacta el briefing técnico para el proveedor AV de un congreso', 'Crea el plan de comunicación para los asistentes de un evento corporativo'],
     system_prompt: `Eres el Asistente de Eventos de XULIA, especializado en organización y producción de eventos corporativos e institucionales.
 
 Tu misión es ayudar al equipo de eventos a:
@@ -101,6 +111,8 @@ Sé meticuloso con los detalles y los plazos. Anticipa posibles problemas y prop
     category: 'licitaciones',
     use_rag: true,
     min_role: 'standard',
+    capabilities: ['Análisis de pliegos técnicos y administrativos', 'Extracción de criterios y requisitos', 'Checklists de documentación', 'Redacción de memorias técnicas', 'Valoración de viabilidad'],
+    examples: ['Analiza este pliego de condiciones y dime si podemos presentarnos [pega el texto]', 'Genera el checklist de documentación necesaria para una licitación de comunicación institucional', 'Redacta la memoria técnica para la prestación de servicios de comunicación a un ayuntamiento'],
     system_prompt: `Eres el Asistente de Licitaciones de XULIA, especializado en contratación pública y concurrencia competitiva.
 
 Tu misión es ayudar al equipo a:
@@ -129,6 +141,8 @@ Sé preciso, riguroso y usa terminología de contratación pública española.`,
     category: 'fondos',
     use_rag: true,
     min_role: 'standard',
+    capabilities: ['Identificación de convocatorias aplicables', 'Análisis de elegibilidad', 'Elaboración de candidaturas', 'Justificación de proyectos', 'Interpretación de normativa FEDER/FSE/Horizonte'],
+    examples: ['¿Hay alguna convocatoria de fondos europeos para proyectos de digitalización de pymes?', 'Analiza si este proyecto de formación puede optar a FSE+ y qué requisitos necesita', 'Ayúdame a redactar la memoria de solicitud para una convocatoria de Horizonte Europa'],
     system_prompt: `Eres el Asistente de Fondos Europeos de XULIA, especializado en programas de financiación europeos y nacionales.
 
 Tu misión es ayudar al equipo a:
@@ -150,6 +164,8 @@ Usa lenguaje técnico-administrativo apropiado para este tipo de documentos.`,
     category: 'tech',
     use_rag: false,
     min_role: 'basic',
+    capabilities: ['Code review y detección de bugs', 'Documentación de APIs y componentes', 'Diseño de arquitecturas web', 'Resolución de errores', 'Buenas prácticas y patrones de diseño'],
+    examples: ['Revisa este componente React y dime qué se puede mejorar [pega el código]', 'Explícame cómo estructurar una API REST con Next.js y Supabase', 'Tengo este error en TypeScript, ¿qué está pasando? [pega el error]'],
     system_prompt: `Eres el Asistente de Desarrollo Web de XULIA, especializado en desarrollo web moderno.
 
 Tu misión es ayudar al equipo de desarrollo a:
@@ -171,6 +187,8 @@ Si detectas un problema de seguridad, señálalo siempre como prioridad máxima.
     category: 'tech',
     use_rag: false,
     min_role: 'basic',
+    capabilities: ['Diagnóstico y resolución de incidencias', 'Documentación de procedimientos', 'Planificación de actualizaciones', 'Gestión de tickets de soporte', 'Asesoramiento en seguridad informática'],
+    examples: ['El ordenador de un compañero no arranca, ¿qué pasos sigo para diagnosticarlo?', 'Redacta el procedimiento estándar para la incorporación de un nuevo empleado (setup de equipo)', 'Necesito configurar una VPN en un Mac, ¿cómo lo hago?'],
     system_prompt: `Eres el Asistente de IT y Sistemas de XULIA, especializado en soporte técnico y administración de sistemas.
 
 Tu misión es ayudar al equipo de IT a:
@@ -191,6 +209,8 @@ Para incidencias, sigue siempre este orden: síntoma → diagnóstico → causa 
     category: 'rrhh',
     use_rag: true,
     min_role: 'standard',
+    capabilities: ['Redacción de ofertas de empleo', 'Planes de onboarding', 'Evaluaciones de desempeño', 'Comunicaciones internas', 'Políticas y procedimientos de RRHH'],
+    examples: ['Redacta una oferta de empleo para un Social Media Manager con 2 años de experiencia', 'Crea el plan de onboarding para un nuevo diseñador gráfico que se incorpora la semana que viene', 'Diseña una evaluación de desempeño semestral para el equipo de marketing'],
     system_prompt: `Eres el Asistente de Recursos Humanos de XULIA, especializado en gestión del talento y procesos de RRHH.
 
 Tu misión es ayudar al equipo de RRHH a:
@@ -211,6 +231,8 @@ Para ofertas de empleo, incluye siempre: misión del puesto, responsabilidades, 
     category: 'direccion',
     use_rag: true,
     min_role: 'advanced',
+    capabilities: ['Informes ejecutivos y cuadros de mando', 'Análisis de datos de negocio', 'Presentaciones para clientes e inversores', 'Comunicaciones corporativas', 'Resúmenes ejecutivos'],
+    examples: ['Resume en un informe ejecutivo los resultados del primer semestre del año', 'Prepara los puntos clave para una presentación ante un cliente institucional importante', 'Analiza esta propuesta de expansión y dame tu valoración estratégica'],
     system_prompt: `Eres el Asistente de Dirección de XULIA, especializado en gestión empresarial y análisis estratégico.
 
 Tu misión es ayudar a la dirección a:

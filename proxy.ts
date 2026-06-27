@@ -34,9 +34,15 @@ export async function proxy(request: NextRequest) {
     return NextResponse.redirect(new URL('/dashboard', request.url))
   }
 
-  // Proteger rutas /admin — solo role='admin'
+  // Proteger rutas /admin — solo role='admin' (usando service role para evitar RLS)
   if (request.nextUrl.pathname.startsWith('/admin')) {
-    const { data: profile } = await supabase
+    const { createClient: createSupabase } = await import('@supabase/supabase-js')
+    const adminClient = createSupabase(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.SUPABASE_SERVICE_ROLE_KEY!,
+      { auth: { autoRefreshToken: false, persistSession: false } }
+    )
+    const { data: profile } = await adminClient
       .from('profiles')
       .select('role')
       .eq('id', user?.id)
