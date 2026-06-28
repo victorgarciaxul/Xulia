@@ -23,6 +23,7 @@ export default function HubPage() {
   const [conversations, setConversations] = useState<{ id: string; title: string | null; updated_at: string }[]>([])
   const [userRole, setUserRole] = useState<string>('basic')
   const [canUsePaidModels, setCanUsePaidModels] = useState(false)
+  const [firstName, setFirstName] = useState('')
   const router = useRouter()
   const supabase = createClient()
 
@@ -33,10 +34,21 @@ export default function HubPage() {
 
       const [{ data: convs }, { data: profile }] = await Promise.all([
         supabase.from('conversations').select('id, title, updated_at').eq('user_id', user.id).order('updated_at', { ascending: false }).limit(50),
-        supabase.from('profiles').select('role').eq('id', user.id).single(),
+        supabase.from('profiles').select('role, full_name').eq('id', user.id).single(),
       ])
       setConversations(convs ?? [])
       setUserRole(profile?.role ?? 'basic')
+
+      // Extraer primer nombre
+      const rawName: string = profile?.full_name ?? user.email ?? ''
+      let name: string
+      if (rawName.includes('@')) {
+        const local = rawName.split('@')[0]
+        name = local.split(/[._\-0-9]/)[0]
+      } else {
+        name = rawName.split(' ')[0]
+      }
+      setFirstName(name)
     }
     load()
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -121,7 +133,7 @@ export default function HubPage() {
             </svg>
           </div>
 
-          <h1 className="text-2xl font-bold text-gray-800 mb-1">{getGreeting()}</h1>
+          <h1 className="text-2xl font-bold text-gray-800 mb-1">{getGreeting()}{firstName ? `, ${firstName}` : ''}</h1>
           <p className="text-gray-400 text-sm mb-8">¿En qué puedo ayudarte hoy?</p>
 
           {/* Input */}

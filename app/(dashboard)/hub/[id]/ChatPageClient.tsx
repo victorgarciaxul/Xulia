@@ -68,7 +68,16 @@ export function ChatPageClient({
   const supabase = createClient()
 
   const agent = agentSlug ? AGENTS.find(a => a.slug === agentSlug) : null
-  const firstName = userName?.split(' ')[0] ?? 'usuario'
+  const firstName = (() => {
+    if (!userName) return 'usuario'
+    // Si contiene @ es un email — coger solo la parte local antes del primer punto/guión/número
+    if (userName.includes('@')) {
+      const local = userName.split('@')[0]
+      return local.split(/[._\-0-9]/)[0]
+    }
+    // Es nombre completo — solo el primer nombre
+    return userName.split(' ')[0]
+  })()
 
   // Auto-send ?prompt= from agent example clicks
   useEffect(() => {
