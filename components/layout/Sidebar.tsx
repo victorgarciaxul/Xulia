@@ -98,18 +98,17 @@ export function Sidebar({ profile }: Props) {
     >
       {/* Logo + toggle expand */}
       <div className={cn('flex items-center px-2.5 pt-3 pb-2 gap-2', expanded && 'px-3')}>
-        <Link
-          href="/hub"
-          className="w-9 h-9 rounded-xl bg-violet-600 flex items-center justify-center shrink-0 hover:bg-violet-500 transition-colors"
-        >
-          <svg viewBox="0 0 24 24" fill="none" className="w-5 h-5 text-white" stroke="currentColor" strokeWidth={2}>
-            <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
+        <Link href="/hub" className="shrink-0">
+          {expanded ? (
+            <img src="/logo-dark.svg" alt="XULIA" className="h-7 w-auto" />
+          ) : (
+            <div className="w-9 h-9 rounded-xl bg-violet-600 flex items-center justify-center hover:bg-violet-500 transition-colors">
+              <svg viewBox="0 0 24 24" fill="none" className="w-5 h-5 text-white" stroke="currentColor" strokeWidth={2}>
+                <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </div>
+          )}
         </Link>
-
-        {expanded && (
-          <span className="text-sm font-bold text-[var(--text-primary)] tracking-tight flex-1 truncate">Xulia</span>
-        )}
 
         <button
           onClick={() => setExpanded(e => !e)}

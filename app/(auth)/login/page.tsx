@@ -34,13 +34,8 @@ export default function LoginPage() {
       <div className="w-full max-w-sm">
         {/* Logo */}
         <div className="text-center mb-10">
-          <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-violet-600 mb-4 shadow-lg shadow-violet-200">
-            <svg viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth={2} className="w-7 h-7">
-              <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
-          </div>
-          <h1 className="text-3xl font-bold text-gray-900 tracking-tight">XULIA</h1>
-          <p className="text-sm text-gray-400 mt-1">Plataforma Corporativa de IA</p>
+          <img src="/logo-dark.svg" alt="XULIA" className="h-10 w-auto mx-auto mb-3" />
+          <p className="text-sm text-gray-400">Plataforma Corporativa de IA</p>
         </div>
 
         {/* Card */}

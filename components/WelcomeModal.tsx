@@ -1,7 +1,6 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { LOGO_B64 } from '@/lib/logoB64'
 
 const STORAGE_KEY = 'xulia_welcome_dismissed_v2'
 
@@ -123,12 +122,12 @@ export function WelcomeModal() {
             </svg>
           </button>
 
-          {/* Logo //XULia */}
-          <div className="mb-8" style={{ filter: 'invert(1)' }}>
+          {/* Logo XULIA */}
+          <div className="mb-8">
             <img
-              src={LOGO_B64}
-              alt="XULia"
-              className="h-16 w-auto"
+              src="/logo-white.svg"
+              alt="XULIA"
+              className="h-14 w-auto"
             />
           </div>
 
