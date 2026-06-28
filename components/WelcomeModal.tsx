@@ -131,16 +131,25 @@ export function WelcomeModal() {
             />
           </div>
 
-          <p className="text-xs tracking-widest text-white/40 uppercase mb-8">
+          <p className="text-xs tracking-widest text-white/40 uppercase mb-4">
             Plataforma corporativa de inteligencia artificial
           </p>
+
+          {/* Aviso uso privado */}
+          <div className="flex items-center gap-2 px-3 py-1.5 rounded-full mb-8"
+            style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.10)' }}>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="w-3 h-3 text-white/40 shrink-0">
+              <rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+            </svg>
+            <span className="text-[11px] text-white/40 font-medium tracking-wide">Uso exclusivo para empleados de <span className="text-white/60 font-semibold">Agencia XUL</span></span>
+          </div>
 
           {/* Separador */}
           <div className="w-12 h-px mb-8" style={{ background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent)' }} />
 
           {/* Descripción */}
           <p className="text-sm text-white/60 leading-relaxed max-w-sm mb-3">
-            Xulia es tu espacio de trabajo impulsado por IA. Chatea con los mejores modelos del mercado, activa agentes especializados para tu área y automatiza procesos repetitivos.
+            Xulia es la plataforma de IA interna de XUL. Chatea con los mejores modelos del mercado, activa agentes especializados para tu área y automatiza procesos repetitivos.
           </p>
           <p className="text-sm text-white/60 leading-relaxed max-w-sm mb-10">
             Accede a la Academia para formarte, gestiona tu base de conocimiento y analiza el rendimiento de tu equipo, todo desde un solo lugar.
@@ -156,13 +165,16 @@ export function WelcomeModal() {
           </button>
 
           {/* No volver a mostrar */}
-          <label className="flex items-center gap-2.5 cursor-pointer group">
+          <label
+            className="flex items-center gap-2.5 cursor-pointer group px-4 py-2.5 rounded-xl transition-all"
+            style={{ background: 'rgba(255,255,255,0.07)', backdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.10)' }}
+          >
             <div
               onClick={() => setNeverShow(v => !v)}
-              className={`w-4 h-4 rounded flex items-center justify-center border transition-all ${
+              className={`w-4 h-4 rounded flex items-center justify-center border transition-all shrink-0 ${
                 neverShow
-                  ? 'bg-violet-600 border-violet-600'
-                  : 'border-white/20 hover:border-white/40'
+                  ? 'bg-violet-500 border-violet-500'
+                  : 'border-white/40 hover:border-white/70'
               }`}
             >
               {neverShow && (
@@ -171,7 +183,7 @@ export function WelcomeModal() {
                 </svg>
               )}
             </div>
-            <span className="text-xs text-white/30 group-hover:text-white/50 transition-colors select-none">
+            <span className="text-xs font-medium text-white/70 group-hover:text-white transition-colors select-none">
               No volver a mostrar
             </span>
           </label>
