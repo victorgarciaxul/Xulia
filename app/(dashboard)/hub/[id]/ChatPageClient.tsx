@@ -75,10 +75,22 @@ export function ChatPageClient({
     const prompt = searchParams.get('prompt')
     if (prompt && messages.length === 0) {
       handleSend(prompt)
-      // Remove param from URL without re-render
       const url = new URL(window.location.href)
       url.searchParams.delete('prompt')
       window.history.replaceState({}, '', url.toString())
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  // Auto-send when navigated from /hub with a pre-saved user message
+  useEffect(() => {
+    if (
+      initialMessages.length === 1 &&
+      initialMessages[0].role === 'user' &&
+      messages.length === 1 &&
+      !isLoading
+    ) {
+      handleSendFromInitial(initialMessages[0].content)
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
@@ -89,6 +101,48 @@ export function ChatPageClient({
     if (h < 20) return 'Buenas tardes'
     return 'Buenas noches'
   }
+
+  // Called when arriving from /hub with a pre-saved message — skips DB insert
+  const handleSendFromInitial = useCallback(async (content: string) => {
+    setIsLoading(true)
+    const payload = [{ role: 'user', content }]
+    try {
+      const res = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ messages: payload, modelId: selectedModel, conversationId, agentSlug }),
+      })
+      if (!res.ok) {
+        const err = await res.json()
+        setMessages(prev => [...prev, { role: 'assistant', content: `⚠️ Error: ${err.error ?? 'Algo salió mal.'}` }])
+        return
+      }
+      const reader = res.body!.getReader()
+      const decoder = new TextDecoder()
+      let assistantContent = ''
+      setMessages(prev => [...prev, { role: 'assistant', content: '' }])
+      while (true) {
+        const { done, value } = await reader.read()
+        if (done) break
+        const chunk = decoder.decode(value, { stream: true })
+        for (const line of chunk.split('\n').filter(l => l.startsWith('data: '))) {
+          try {
+            const data = JSON.parse(line.slice(6))
+            if (data.content) {
+              assistantContent += data.content
+              setMessages(prev => { const u = [...prev]; u[u.length - 1] = { role: 'assistant', content: assistantContent }; return u })
+            }
+          } catch {}
+        }
+      }
+      router.refresh()
+    } catch {
+      setMessages(prev => [...prev, { role: 'assistant', content: '⚠️ Error de conexión.' }])
+    } finally {
+      setIsLoading(false)
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedModel, conversationId, agentSlug])
 
   const handleSend = useCallback(async (content: string, attachments?: Attachment[]) => {
     if (isLoading) return
@@ -173,14 +227,8 @@ export function ChatPageClient({
     }
   }, [messages, isLoading, selectedModel, conversationId, agentSlug, supabase, router])
 
-  const handleNewConversation = async () => {
-    const { data: { user } } = await supabase.auth.getUser()
-    const { data: conv } = await supabase
-      .from('conversations')
-      .insert({ user_id: user?.id })
-      .select('id')
-      .single()
-    if (conv) router.push(`/hub/${conv.id}`)
+  const handleNewConversation = () => {
+    router.push('/hub')
   }
 
   const isEmpty = messages.length === 0
