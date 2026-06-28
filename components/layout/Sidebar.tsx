@@ -33,7 +33,7 @@ const NAV = [
       <polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/>
     </svg>
   )},
-  { href: '/academia',        label: 'Academia',      short: 'Academy', icon: (
+  { href: '/academia',        label: 'Academia',      short: 'Academia', icon: (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} className="w-5 h-5 shrink-0">
       <path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/>
     </svg>
@@ -44,7 +44,7 @@ const NAV = [
       <path d="M9 12l2 2 4-4"/>
     </svg>
   )},
-  { href: '/analitica',       label: 'Analítica',     short: 'Stats',  icon: (
+  { href: '/analitica',       label: 'Analítica',     short: 'Analítica',  icon: (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} className="w-5 h-5 shrink-0">
       <line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/>
       <line x1="6" y1="20" x2="6" y2="14"/>
