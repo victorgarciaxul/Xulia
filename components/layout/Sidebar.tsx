@@ -97,7 +97,7 @@ export function Sidebar({ profile }: Props) {
       )}
     >
       {/* Logo + toggle */}
-      <div className={cn('flex items-center pt-3 pb-2 gap-2', expanded ? 'px-3' : 'px-2 justify-between')}>
+      <div className={cn('relative flex items-center pt-3 pb-2', expanded ? 'px-3 gap-2' : 'justify-center')}>
         <Link href="/hub" className="shrink-0">
           {expanded ? (
             <img src="/logo-dark.svg" alt="XULIA" className="h-7 w-auto" />
@@ -106,17 +106,27 @@ export function Sidebar({ profile }: Props) {
           )}
         </Link>
 
-        <button
-          onClick={() => setExpanded(e => !e)}
-          className="w-7 h-7 rounded-lg flex items-center justify-center text-[var(--text-muted)] hover:bg-[var(--bg-hover)] hover:text-[var(--text-primary)] transition-colors shrink-0"
-        >
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="w-4 h-4">
-            {expanded
-              ? <path d="M15 18l-6-6 6-6" strokeLinecap="round" strokeLinejoin="round"/>
-              : <path d="M9 18l6-6-6-6" strokeLinecap="round" strokeLinejoin="round"/>
-            }
-          </svg>
-        </button>
+        {expanded && (
+          <button
+            onClick={() => setExpanded(e => !e)}
+            className="ml-auto w-7 h-7 rounded-lg flex items-center justify-center text-[var(--text-muted)] hover:bg-[var(--bg-hover)] hover:text-[var(--text-primary)] transition-colors shrink-0"
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="w-4 h-4">
+              <path d="M15 18l-6-6 6-6" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </button>
+        )}
+
+        {!expanded && (
+          <button
+            onClick={() => setExpanded(true)}
+            className="absolute -right-3 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-white border border-[var(--border)] shadow-sm flex items-center justify-center text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors"
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="w-3 h-3">
+              <path d="M9 18l6-6-6-6" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </button>
+        )}
       </div>
 
       {/* Nav */}
