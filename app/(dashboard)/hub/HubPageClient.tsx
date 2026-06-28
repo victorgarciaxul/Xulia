@@ -8,12 +8,6 @@ import { ConversationSidebar } from '@/components/hub/ConversationSidebar'
 
 const DEFAULT_MODEL = 'meta-llama/llama-3.1-8b-instruct:free'
 
-const EXAMPLE_PROMPTS = [
-  { icon: '✉️', label: 'Redactar un email', prompt: 'Redacta un email profesional para presentar nuestra agencia a un nuevo cliente potencial' },
-  { icon: '📋', label: 'Analizar licitación', prompt: 'Ayúdame a analizar los requisitos clave de un pliego de licitación pública' },
-  { icon: '📣', label: 'Campaña de marketing', prompt: 'Crea una estrategia de contenido para redes sociales para una empresa del sector público' },
-  { icon: '💡', label: 'Generar ideas', prompt: 'Dame 10 ideas creativas para una campaña de comunicación institucional' },
-]
 
 interface Props {
   firstName: string
@@ -134,18 +128,6 @@ export function HubPageClient({ firstName, userRole, conversations }: Props) {
               </button>
             </div>
 
-            {/* Ejemplos */}
-            <div className="grid grid-cols-2 gap-2 mt-3">
-              {EXAMPLE_PROMPTS.map(p => (
-                <button
-                  key={p.label}
-                  onClick={() => handleSend(p.prompt)}
-                  className="text-left bg-white border border-[#e5e5ea] rounded-xl px-4 py-3 text-sm text-gray-600 hover:bg-violet-50 hover:border-violet-200 hover:text-violet-700 transition-all"
-                >
-                  <span className="mr-2">{p.icon}</span>{p.label}
-                </button>
-              ))}
-            </div>
           </div>
         </div>
       </div>

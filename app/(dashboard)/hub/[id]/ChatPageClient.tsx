@@ -44,12 +44,6 @@ interface Props {
 
 const DEFAULT_MODEL = 'meta-llama/llama-3.1-8b-instruct:free'
 
-const EXAMPLE_PROMPTS = [
-  { icon: 'file-text' as const, label: 'Redactar un email',      prompt: 'Redacta un email profesional para presentar nuestra agencia a un nuevo cliente potencial' },
-  { icon: 'clipboard' as const, label: 'Analizar licitación',    prompt: 'Ayúdame a analizar los requisitos clave de un pliego de licitación pública' },
-  { icon: 'megaphone' as const, label: 'Campaña de marketing',   prompt: 'Crea una estrategia de contenido para redes sociales para una empresa del sector público' },
-  { icon: 'lightbulb' as const, label: 'Generar ideas',          prompt: 'Dame 10 ideas creativas para una campaña de comunicación institucional' },
-]
 
 export function ChatPageClient({
   conversationId,
