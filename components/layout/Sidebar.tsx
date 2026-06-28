@@ -8,45 +8,45 @@ import { createClient } from '@/lib/supabase/client'
 import type { Profile } from '@/types'
 
 const NAV = [
-  { href: '/hub', label: 'Chat', icon: (
+  { href: '/hub',             label: 'Chat',          short: 'Chat',   icon: (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} className="w-5 h-5 shrink-0">
       <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
     </svg>
   )},
-  { href: '/agentes', label: 'Agentes', icon: (
+  { href: '/agentes',         label: 'Agentes',       short: 'Agentes', icon: (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} className="w-5 h-5 shrink-0">
       <circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
     </svg>
   )},
-  { href: '/conocimiento', label: 'Conocimiento', icon: (
+  { href: '/conocimiento',    label: 'Conocimiento',  short: 'Docs',   icon: (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} className="w-5 h-5 shrink-0">
       <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
     </svg>
   )},
-  { href: '/prompts', label: 'Prompts', icon: (
+  { href: '/prompts',         label: 'Prompts',       short: 'Prompts', icon: (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} className="w-5 h-5 shrink-0">
       <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
       <polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/>
     </svg>
   )},
-  { href: '/academia', label: 'Academia', icon: (
+  { href: '/academia',        label: 'Academia',      short: 'Academy', icon: (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} className="w-5 h-5 shrink-0">
       <path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/>
     </svg>
   )},
-  { href: '/automatizaciones', label: 'Automatizaciones', icon: (
+  { href: '/automatizaciones', label: 'Automatizaciones', short: 'Auto', icon: (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} className="w-5 h-5 shrink-0">
       <path d="M12 2a9 9 0 0 1 9 9c0 3.5-2 6.5-5 8l-1 3H9l-1-3C5 17.5 3 14.5 3 11a9 9 0 0 1 9-9z"/>
       <path d="M9 12l2 2 4-4"/>
     </svg>
   )},
-  { href: '/analitica', label: 'Analítica', icon: (
+  { href: '/analitica',       label: 'Analítica',     short: 'Stats',  icon: (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} className="w-5 h-5 shrink-0">
       <line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/>
       <line x1="6" y1="20" x2="6" y2="14"/>
     </svg>
   )},
-  { href: '/benchmarks', label: 'Benchmarks', icon: (
+  { href: '/benchmarks',      label: 'Benchmarks',    short: 'Bench',  icon: (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} className="w-5 h-5 shrink-0">
       <path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/>
     </svg>
@@ -57,13 +57,11 @@ interface Props {
   profile: Profile | null
 }
 
-
 export function Sidebar({ profile }: Props) {
   const pathname = usePathname()
   const router = useRouter()
   const supabase = createClient()
   const [expanded, setExpanded] = useState(false)
-  const [showUserMenu, setShowUserMenu] = useState(false)
 
   async function handleLogout() {
     await supabase.auth.signOut()
@@ -80,6 +78,7 @@ export function Sidebar({ profile }: Props) {
     ...(profile?.role === 'admin' ? [{
       href: '/admin',
       label: 'Administración',
+      short: 'Admin',
       icon: (
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} className="w-5 h-5 shrink-0">
           <circle cx="12" cy="12" r="3"/>
@@ -93,11 +92,11 @@ export function Sidebar({ profile }: Props) {
     <aside
       className={cn(
         'relative z-40 flex flex-col rounded-2xl bg-[var(--bg-surface)] border border-[var(--border)] shadow-xl transition-all duration-300 ease-in-out my-3 ml-3 flex-shrink-0',
-        expanded ? 'w-52' : 'w-14'
+        expanded ? 'w-52' : 'w-[72px]'
       )}
     >
-      {/* Logo + toggle expand */}
-      <div className={cn('flex items-center px-2.5 pt-3 pb-2 gap-2', expanded && 'px-3')}>
+      {/* Logo + toggle */}
+      <div className={cn('flex items-center pt-3 pb-2 gap-2', expanded ? 'px-3' : 'px-2 justify-between')}>
         <Link href="/hub" className="shrink-0">
           {expanded ? (
             <img src="/logo-dark.svg" alt="XULIA" className="h-7 w-auto" />
@@ -132,36 +131,30 @@ export function Sidebar({ profile }: Props) {
               key={item.href}
               href={item.href}
               onClick={() => setExpanded(false)}
-              title={!expanded ? item.label : undefined}
               className={cn(
-                'flex items-center gap-3 px-2 h-10 rounded-xl transition-all group relative',
-                expanded ? 'px-2.5' : 'justify-center',
+                'flex rounded-xl transition-all',
+                expanded
+                  ? 'flex-row items-center gap-3 px-2.5 h-10'
+                  : 'flex-col items-center justify-center py-1.5 gap-0.5',
                 active
                   ? 'bg-[var(--accent-light)] text-[var(--accent)]'
                   : 'text-[var(--text-muted)] hover:bg-[var(--bg-hover)] hover:text-[var(--text-primary)]'
               )}
             >
               {item.icon}
-              {expanded && (
-                <span className="text-sm font-medium truncate">{item.label}</span>
-              )}
-              {!expanded && (
-                <span className="absolute left-14 bg-gray-900 text-white text-xs px-2 py-1 rounded-md whitespace-nowrap opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity z-50 shadow-lg">
-                  {item.label}
-                </span>
-              )}
+              {expanded
+                ? <span className="text-sm font-medium truncate">{item.label}</span>
+                : <span className="text-[9px] font-semibold tracking-wide leading-none">{item.short}</span>
+              }
             </Link>
           )
         })}
       </nav>
 
-      {/* Bottom section */}
+      {/* Bottom */}
       <div className={cn('px-2 pb-3 flex flex-col gap-2', expanded ? 'px-3' : 'items-center')}>
-
-        {/* Separador */}
         <div className="w-full border-t border-[var(--border)]" />
 
-        {/* Avatar + usuario + logout */}
         {expanded ? (
           <div className="flex items-center gap-2 px-1">
             <div className="w-8 h-8 rounded-full bg-gradient-to-br from-amber-400 to-rose-500 flex items-center justify-center text-[11px] font-bold text-white shrink-0">
@@ -191,16 +184,13 @@ export function Sidebar({ profile }: Props) {
             <button
               onClick={handleLogout}
               title="Cerrar sesión"
-              className="w-8 h-8 rounded-lg flex items-center justify-center text-gray-400 hover:bg-rose-50 hover:text-rose-500 transition-colors group relative"
+              className="w-8 h-8 rounded-lg flex items-center justify-center text-gray-400 hover:bg-rose-50 hover:text-rose-500 transition-colors"
             >
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} className="w-4 h-4">
                 <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
                 <polyline points="16 17 21 12 16 7"/>
                 <line x1="21" y1="12" x2="9" y2="12"/>
               </svg>
-              <span className="absolute left-11 bg-gray-900 text-white text-xs px-2 py-1 rounded-md whitespace-nowrap opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity z-50 shadow-lg">
-                Cerrar sesión
-              </span>
             </button>
           </div>
         )}
