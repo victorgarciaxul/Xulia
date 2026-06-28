@@ -8,6 +8,13 @@ export interface ModelMeta {
   min_role: 'basic' | 'standard' | 'advanced' | 'admin'
   cost_input_per_1m: number
   cost_output_per_1m: number
+  scores: {
+    reasoning: number   // 0-100
+    coding: number      // 0-100
+    writing: number     // 0-100
+    speed: number       // 0-100 (mayor = más rápido)
+  }
+  tags?: string[]
 }
 
 export const AVAILABLE_MODELS: ModelMeta[] = [
@@ -22,6 +29,8 @@ export const AVAILABLE_MODELS: ModelMeta[] = [
     min_role: 'basic',
     cost_input_per_1m: 0,
     cost_output_per_1m: 0,
+    scores: { reasoning: 52, coding: 48, writing: 55, speed: 95 },
+    tags: ['rápido', 'ligero'],
   },
   {
     id: 'google/gemma-4-31b-it:free',
@@ -33,6 +42,8 @@ export const AVAILABLE_MODELS: ModelMeta[] = [
     min_role: 'basic',
     cost_input_per_1m: 0,
     cost_output_per_1m: 0,
+    scores: { reasoning: 68, coding: 62, writing: 74, speed: 78 },
+    tags: ['redacción', 'análisis'],
   },
   {
     id: 'nvidia/nemotron-3-super-120b-a12b:free',
@@ -44,6 +55,8 @@ export const AVAILABLE_MODELS: ModelMeta[] = [
     min_role: 'basic',
     cost_input_per_1m: 0,
     cost_output_per_1m: 0,
+    scores: { reasoning: 76, coding: 72, writing: 74, speed: 55 },
+    tags: ['contexto largo', 'potente'],
   },
   {
     id: 'openai/gpt-oss-120b:free',
@@ -55,6 +68,8 @@ export const AVAILABLE_MODELS: ModelMeta[] = [
     min_role: 'basic',
     cost_input_per_1m: 0,
     cost_output_per_1m: 0,
+    scores: { reasoning: 78, coding: 74, writing: 72, speed: 58 },
+    tags: ['razonamiento', 'open source'],
   },
   {
     id: 'meta-llama/llama-3.3-70b-instruct:free',
@@ -66,6 +81,8 @@ export const AVAILABLE_MODELS: ModelMeta[] = [
     min_role: 'basic',
     cost_input_per_1m: 0,
     cost_output_per_1m: 0,
+    scores: { reasoning: 72, coding: 68, writing: 76, speed: 70 },
+    tags: ['redacción', 'versátil'],
   },
   {
     id: 'nvidia/nemotron-3-ultra-550b-a55b:free',
@@ -77,6 +94,8 @@ export const AVAILABLE_MODELS: ModelMeta[] = [
     min_role: 'basic',
     cost_input_per_1m: 0,
     cost_output_per_1m: 0,
+    scores: { reasoning: 84, coding: 80, writing: 80, speed: 35 },
+    tags: ['potente', 'contexto largo'],
   },
   {
     id: 'qwen/qwen3-coder:free',
@@ -88,6 +107,8 @@ export const AVAILABLE_MODELS: ModelMeta[] = [
     min_role: 'basic',
     cost_input_per_1m: 0,
     cost_output_per_1m: 0,
+    scores: { reasoning: 79, coding: 91, writing: 65, speed: 62 },
+    tags: ['código', 'técnico'],
   },
   {
     id: 'qwen/qwen3-next-80b-a3b-instruct:free',
@@ -99,6 +120,8 @@ export const AVAILABLE_MODELS: ModelMeta[] = [
     min_role: 'basic',
     cost_input_per_1m: 0,
     cost_output_per_1m: 0,
+    scores: { reasoning: 75, coding: 72, writing: 78, speed: 65 },
+    tags: ['instrucción', 'análisis'],
   },
   {
     id: 'openai/gpt-oss-20b:free',
@@ -110,6 +133,8 @@ export const AVAILABLE_MODELS: ModelMeta[] = [
     min_role: 'basic',
     cost_input_per_1m: 0,
     cost_output_per_1m: 0,
+    scores: { reasoning: 60, coding: 58, writing: 62, speed: 88 },
+    tags: ['rápido', 'ligero'],
   },
   {
     id: 'nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free',
@@ -121,6 +146,8 @@ export const AVAILABLE_MODELS: ModelMeta[] = [
     min_role: 'basic',
     cost_input_per_1m: 0,
     cost_output_per_1m: 0,
+    scores: { reasoning: 77, coding: 65, writing: 64, speed: 72 },
+    tags: ['razonamiento', 'multimodal'],
   },
 
   // ── GOOGLE / GEMINI ──────────────────────────────────────────────────────
@@ -134,6 +161,8 @@ export const AVAILABLE_MODELS: ModelMeta[] = [
     min_role: 'basic',
     cost_input_per_1m: 0,
     cost_output_per_1m: 0,
+    scores: { reasoning: 78, coding: 74, writing: 80, speed: 90 },
+    tags: ['rápido', 'contexto largo'],
   },
   {
     id: 'google/gemini-2.5-pro',
@@ -145,6 +174,8 @@ export const AVAILABLE_MODELS: ModelMeta[] = [
     min_role: 'basic',
     cost_input_per_1m: 0,
     cost_output_per_1m: 0,
+    scores: { reasoning: 88, coding: 84, writing: 87, speed: 68 },
+    tags: ['potente', 'contexto largo'],
   },
 
   // ── OPENAI ────────────────────────────────────────────────────────────────
@@ -158,6 +189,8 @@ export const AVAILABLE_MODELS: ModelMeta[] = [
     min_role: 'basic',
     cost_input_per_1m: 0.15,
     cost_output_per_1m: 0.60,
+    scores: { reasoning: 72, coding: 70, writing: 75, speed: 88 },
+    tags: ['económico', 'rápido'],
   },
   {
     id: 'openai/o4-mini',
@@ -169,6 +202,8 @@ export const AVAILABLE_MODELS: ModelMeta[] = [
     min_role: 'basic',
     cost_input_per_1m: 1.10,
     cost_output_per_1m: 4.40,
+    scores: { reasoning: 88, coding: 85, writing: 72, speed: 75 },
+    tags: ['razonamiento', 'matemáticas'],
   },
   {
     id: 'openai/gpt-4.1',
@@ -180,6 +215,8 @@ export const AVAILABLE_MODELS: ModelMeta[] = [
     min_role: 'basic',
     cost_input_per_1m: 2.00,
     cost_output_per_1m: 8.00,
+    scores: { reasoning: 85, coding: 82, writing: 88, speed: 72 },
+    tags: ['redacción', 'contexto largo'],
   },
   {
     id: 'openai/gpt-4o',
@@ -191,6 +228,8 @@ export const AVAILABLE_MODELS: ModelMeta[] = [
     min_role: 'basic',
     cost_input_per_1m: 2.50,
     cost_output_per_1m: 10.00,
+    scores: { reasoning: 84, coding: 80, writing: 86, speed: 76 },
+    tags: ['versátil', 'multimodal'],
   },
   {
     id: 'openai/o3',
@@ -202,6 +241,8 @@ export const AVAILABLE_MODELS: ModelMeta[] = [
     min_role: 'basic',
     cost_input_per_1m: 2.00,
     cost_output_per_1m: 8.00,
+    scores: { reasoning: 95, coding: 90, writing: 80, speed: 45 },
+    tags: ['razonamiento', 'estrategia'],
   },
 
   // ── ANTHROPIC / CLAUDE ───────────────────────────────────────────────────
@@ -215,6 +256,8 @@ export const AVAILABLE_MODELS: ModelMeta[] = [
     min_role: 'basic',
     cost_input_per_1m: 1.00,
     cost_output_per_1m: 5.00,
+    scores: { reasoning: 74, coding: 72, writing: 78, speed: 92 },
+    tags: ['rápido', 'económico'],
   },
   {
     id: 'anthropic/claude-sonnet-4.6',
@@ -226,6 +269,8 @@ export const AVAILABLE_MODELS: ModelMeta[] = [
     min_role: 'basic',
     cost_input_per_1m: 3.00,
     cost_output_per_1m: 15.00,
+    scores: { reasoning: 90, coding: 88, writing: 92, speed: 70 },
+    tags: ['redacción', 'análisis', 'contexto largo'],
   },
   {
     id: 'anthropic/claude-opus-4.8',
@@ -237,6 +282,8 @@ export const AVAILABLE_MODELS: ModelMeta[] = [
     min_role: 'basic',
     cost_input_per_1m: 5.00,
     cost_output_per_1m: 25.00,
+    scores: { reasoning: 96, coding: 92, writing: 95, speed: 50 },
+    tags: ['potente', 'complejo'],
   },
 ]
 
