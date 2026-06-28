@@ -102,9 +102,7 @@ export function Sidebar({ profile }: Props) {
           {expanded ? (
             <img src="/logo-dark.svg" alt="XULIA" className="h-7 w-auto" />
           ) : (
-            <div className="w-9 h-9 rounded-xl bg-violet-600 flex items-center justify-center hover:bg-violet-500 transition-colors overflow-hidden">
-              <RobotIcon size={32} animated={true} />
-            </div>
+            <RobotIcon size={28} animated={true} />
           )}
         </Link>
 
