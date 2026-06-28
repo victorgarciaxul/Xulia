@@ -1,11 +1,14 @@
 'use client'
 
+'use client'
+
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { cn } from '@/lib/utils'
 import { createClient } from '@/lib/supabase/client'
 import { RobotIcon } from '@/components/ui/RobotIcon'
+import { TwoFactorModal } from '@/components/TwoFactorModal'
 import type { Profile } from '@/types'
 
 const NAV = [
@@ -63,6 +66,14 @@ export function Sidebar({ profile }: Props) {
   const router = useRouter()
   const supabase = createClient()
   const [expanded, setExpanded] = useState(false)
+  const [show2FA, setShow2FA] = useState(false)
+  const [mfaEnabled, setMfaEnabled] = useState(false)
+
+  useEffect(() => {
+    supabase.auth.mfa.listFactors().then(({ data }) => {
+      setMfaEnabled(!!data?.totp?.find(f => f.status === 'verified'))
+    })
+  }, [show2FA])
 
   async function handleLogout() {
     await supabase.auth.signOut()
@@ -172,6 +183,16 @@ export function Sidebar({ profile }: Props) {
               <p className="text-[10px] text-gray-400 truncate capitalize">{profile?.role ?? ''}</p>
             </div>
             <button
+              onClick={() => setShow2FA(true)}
+              title={mfaEnabled ? '2FA activado' : 'Activar 2FA'}
+              className="relative w-7 h-7 rounded-lg flex items-center justify-center text-gray-400 hover:bg-violet-50 hover:text-violet-600 transition-colors shrink-0"
+            >
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} className="w-4 h-4">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+              </svg>
+              <span className={`absolute top-1 right-1 w-1.5 h-1.5 rounded-full ${mfaEnabled ? 'bg-emerald-500' : 'bg-gray-300'}`} />
+            </button>
+            <button
               onClick={handleLogout}
               title="Cerrar sesión"
               className="w-7 h-7 rounded-lg flex items-center justify-center text-gray-400 hover:bg-rose-50 hover:text-rose-500 transition-colors shrink-0"
@@ -189,6 +210,16 @@ export function Sidebar({ profile }: Props) {
               {initials}
             </div>
             <button
+              onClick={() => setShow2FA(true)}
+              title={mfaEnabled ? '2FA activado' : 'Activar 2FA'}
+              className="relative w-8 h-8 rounded-lg flex items-center justify-center text-gray-400 hover:bg-violet-50 hover:text-violet-600 transition-colors"
+            >
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} className="w-4 h-4">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+              </svg>
+              <span className={`absolute top-1 right-1 w-1.5 h-1.5 rounded-full ${mfaEnabled ? 'bg-emerald-500' : 'bg-gray-300'}`} />
+            </button>
+            <button
               onClick={handleLogout}
               title="Cerrar sesión"
               className="w-8 h-8 rounded-lg flex items-center justify-center text-gray-400 hover:bg-rose-50 hover:text-rose-500 transition-colors"
@@ -202,6 +233,8 @@ export function Sidebar({ profile }: Props) {
           </div>
         )}
       </div>
+
+      <TwoFactorModal open={show2FA} onClose={() => setShow2FA(false)} />
     </aside>
   )
 }
