@@ -53,6 +53,8 @@ export default async function ChatPage({ params }: Props) {
     .eq('user_id', user.id)
     .single()
 
+  const userName = profile?.full_name ?? user.email?.split('@')[0] ?? undefined
+
   return (
     <ChatPageClient
       conversationId={id}
@@ -60,7 +62,7 @@ export default async function ChatPage({ params }: Props) {
       conversations={conversations ?? []}
       agentSlug={conv.agent_slug}
       userRole={profile?.role ?? 'basic'}
-      userName={profile?.full_name ?? undefined}
+      userName={userName}
       canUsePaidModels={quota?.can_use_paid_models ?? false}
     />
   )

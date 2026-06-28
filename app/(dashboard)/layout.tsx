@@ -2,6 +2,7 @@ import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { redirect } from 'next/navigation'
 import { Sidebar } from '@/components/layout/Sidebar'
+import { WelcomeModal } from '@/components/WelcomeModal'
 
 export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
   const supabase = await createClient()
@@ -18,6 +19,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
 
   return (
     <div className="flex h-screen overflow-hidden bg-[#f4f4f6]">
+      <WelcomeModal />
       <Sidebar profile={profile} />
       <main className="flex-1 overflow-y-auto min-w-0 my-3 mr-3 rounded-2xl bg-[#f4f4f6]">
         {children}

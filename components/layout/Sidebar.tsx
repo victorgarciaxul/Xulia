@@ -8,12 +8,6 @@ import { createClient } from '@/lib/supabase/client'
 import type { Profile } from '@/types'
 
 const NAV = [
-  { href: '/dashboard', label: 'Dashboard', icon: (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} className="w-5 h-5 shrink-0">
-      <rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/>
-      <rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/>
-    </svg>
-  )},
   { href: '/hub', label: 'Chat', icon: (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} className="w-5 h-5 shrink-0">
       <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
@@ -58,11 +52,13 @@ interface Props {
   profile: Profile | null
 }
 
+
 export function Sidebar({ profile }: Props) {
   const pathname = usePathname()
   const router = useRouter()
   const supabase = createClient()
   const [expanded, setExpanded] = useState(false)
+  const [showUserMenu, setShowUserMenu] = useState(false)
 
   async function handleLogout() {
     await supabase.auth.signOut()
@@ -89,107 +85,122 @@ export function Sidebar({ profile }: Props) {
   ]
 
   return (
-    <>
-      <aside
-        className={cn(
-          'relative z-40 flex flex-col rounded-2xl bg-white/90 backdrop-blur-md border border-[#e5e5ea] shadow-xl transition-all duration-300 ease-in-out my-3 ml-3 flex-shrink-0',
-          expanded ? 'w-52' : 'w-14'
+    <aside
+      className={cn(
+        'relative z-40 flex flex-col rounded-2xl bg-[var(--bg-surface)] border border-[var(--border)] shadow-xl transition-all duration-300 ease-in-out my-3 ml-3 flex-shrink-0',
+        expanded ? 'w-52' : 'w-14'
+      )}
+    >
+      {/* Logo + toggle expand */}
+      <div className={cn('flex items-center px-2.5 pt-3 pb-2 gap-2', expanded && 'px-3')}>
+        <Link
+          href="/hub"
+          className="w-9 h-9 rounded-xl bg-violet-600 flex items-center justify-center shrink-0 hover:bg-violet-500 transition-colors"
+        >
+          <svg viewBox="0 0 24 24" fill="none" className="w-5 h-5 text-white" stroke="currentColor" strokeWidth={2}>
+            <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+        </Link>
+
+        {expanded && (
+          <span className="text-sm font-bold text-[var(--text-primary)] tracking-tight flex-1 truncate">Xulia</span>
         )}
-      >
-        {/* Logo + toggle */}
-        <div className={cn('flex items-center px-2.5 pt-3 pb-2 gap-2', expanded && 'px-3')}>
-          <Link
-            href="/dashboard"
-            className="w-9 h-9 rounded-xl bg-violet-600 flex items-center justify-center shrink-0 hover:bg-violet-500 transition-colors"
-          >
-            <svg viewBox="0 0 24 24" fill="none" className="w-5 h-5 text-white" stroke="currentColor" strokeWidth={2}>
-              <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
-          </Link>
 
-          {expanded && (
-            <span className="text-sm font-bold text-gray-900 tracking-tight flex-1 truncate">Xulia</span>
-          )}
+        <button
+          onClick={() => setExpanded(e => !e)}
+          className="w-7 h-7 rounded-lg flex items-center justify-center text-[var(--text-muted)] hover:bg-[var(--bg-hover)] hover:text-[var(--text-primary)] transition-colors shrink-0"
+        >
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="w-4 h-4">
+            {expanded
+              ? <path d="M15 18l-6-6 6-6" strokeLinecap="round" strokeLinejoin="round"/>
+              : <path d="M9 18l6-6-6-6" strokeLinecap="round" strokeLinejoin="round"/>
+            }
+          </svg>
+        </button>
+      </div>
 
-          <button
-            onClick={() => setExpanded(e => !e)}
-            className="w-7 h-7 rounded-lg flex items-center justify-center text-gray-400 hover:bg-gray-100 hover:text-gray-700 transition-colors shrink-0"
-          >
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="w-4 h-4">
-              {expanded
-                ? <path d="M15 18l-6-6 6-6" strokeLinecap="round" strokeLinejoin="round"/>
-                : <path d="M9 18l6-6-6-6" strokeLinecap="round" strokeLinejoin="round"/>
-              }
-            </svg>
-          </button>
-        </div>
+      {/* Nav */}
+      <nav className="flex flex-col gap-0.5 flex-1 px-2 py-1 overflow-hidden">
+        {allNav.map(item => {
+          const active = pathname === item.href || pathname.startsWith(item.href + '/')
+          return (
+            <Link
+              key={item.href}
+              href={item.href}
+              onClick={() => setExpanded(false)}
+              title={!expanded ? item.label : undefined}
+              className={cn(
+                'flex items-center gap-3 px-2 h-10 rounded-xl transition-all group relative',
+                expanded ? 'px-2.5' : 'justify-center',
+                active
+                  ? 'bg-[var(--accent-light)] text-[var(--accent)]'
+                  : 'text-[var(--text-muted)] hover:bg-[var(--bg-hover)] hover:text-[var(--text-primary)]'
+              )}
+            >
+              {item.icon}
+              {expanded && (
+                <span className="text-sm font-medium truncate">{item.label}</span>
+              )}
+              {!expanded && (
+                <span className="absolute left-14 bg-gray-900 text-white text-xs px-2 py-1 rounded-md whitespace-nowrap opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity z-50 shadow-lg">
+                  {item.label}
+                </span>
+              )}
+            </Link>
+          )
+        })}
+      </nav>
 
-        {/* Nav */}
-        <nav className="flex flex-col gap-0.5 flex-1 px-2 py-1 overflow-hidden">
-          {allNav.map(item => {
-            const active = pathname === item.href || pathname.startsWith(item.href + '/')
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                onClick={() => setExpanded(false)}
-                title={!expanded ? item.label : undefined}
-                className={cn(
-                  'flex items-center gap-3 px-2 h-10 rounded-xl transition-all group relative',
-                  expanded ? 'px-2.5' : 'justify-center',
-                  active
-                    ? 'bg-violet-100 text-violet-700'
-                    : 'text-gray-400 hover:bg-gray-100 hover:text-gray-700'
-                )}
-              >
-                {item.icon}
-                {expanded && (
-                  <span className="text-sm font-medium truncate">{item.label}</span>
-                )}
-                {!expanded && (
-                  <span className="absolute left-14 bg-gray-900 text-white text-xs px-2 py-1 rounded-md whitespace-nowrap opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity z-50 shadow-lg">
-                    {item.label}
-                  </span>
-                )}
-              </Link>
-            )
-          })}
-        </nav>
+      {/* Bottom section */}
+      <div className={cn('px-2 pb-3 flex flex-col gap-2', expanded ? 'px-3' : 'items-center')}>
 
-        {/* User */}
-        <div className={cn('px-2 pb-3 flex flex-col gap-1', expanded ? 'px-3' : 'items-center')}>
-          <div className={cn('flex items-center gap-2.5', !expanded && 'justify-center')}>
+        {/* Separador */}
+        <div className="w-full border-t border-[var(--border)]" />
+
+        {/* Avatar + usuario + logout */}
+        {expanded ? (
+          <div className="flex items-center gap-2 px-1">
             <div className="w-8 h-8 rounded-full bg-gradient-to-br from-amber-400 to-rose-500 flex items-center justify-center text-[11px] font-bold text-white shrink-0">
               {initials}
             </div>
-            {expanded && (
-              <div className="min-w-0">
-                <p className="text-xs font-semibold text-gray-800 truncate">{profile?.full_name ?? 'Usuario'}</p>
-                <p className="text-[10px] text-gray-400 truncate capitalize">{profile?.role ?? ''}</p>
-              </div>
-            )}
+            <div className="min-w-0 flex-1">
+              <p className="text-xs font-semibold text-gray-800 truncate leading-tight">{profile?.full_name ?? 'Usuario'}</p>
+              <p className="text-[10px] text-gray-400 truncate capitalize">{profile?.role ?? ''}</p>
+            </div>
+            <button
+              onClick={handleLogout}
+              title="Cerrar sesión"
+              className="w-7 h-7 rounded-lg flex items-center justify-center text-gray-400 hover:bg-rose-50 hover:text-rose-500 transition-colors shrink-0"
+            >
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} className="w-4 h-4">
+                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+                <polyline points="16 17 21 12 16 7"/>
+                <line x1="21" y1="12" x2="9" y2="12"/>
+              </svg>
+            </button>
           </div>
-          <button
-            onClick={handleLogout}
-            title="Cerrar sesión"
-            className={cn(
-              'flex items-center gap-2 px-2 py-1.5 rounded-lg text-xs text-gray-400 hover:bg-gray-100 hover:text-gray-700 transition-colors group relative',
-              expanded ? 'w-full' : 'justify-center w-10'
-            )}
-          >
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} className="w-4 h-4 shrink-0">
-              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
-              <polyline points="16 17 21 12 16 7"/>
-              <line x1="21" y1="12" x2="9" y2="12"/>
-            </svg>
-            {expanded
-              ? 'Cerrar sesión'
-              : <span className="absolute left-14 bg-gray-900 text-white text-xs px-2 py-1 rounded-md whitespace-nowrap opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity z-50 shadow-lg">Cerrar sesión</span>
-            }
-          </button>
-        </div>
-      </aside>
-
-    </>
+        ) : (
+          <div className="flex flex-col items-center gap-1.5">
+            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-amber-400 to-rose-500 flex items-center justify-center text-[11px] font-bold text-white">
+              {initials}
+            </div>
+            <button
+              onClick={handleLogout}
+              title="Cerrar sesión"
+              className="w-8 h-8 rounded-lg flex items-center justify-center text-gray-400 hover:bg-rose-50 hover:text-rose-500 transition-colors group relative"
+            >
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} className="w-4 h-4">
+                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+                <polyline points="16 17 21 12 16 7"/>
+                <line x1="21" y1="12" x2="9" y2="12"/>
+              </svg>
+              <span className="absolute left-11 bg-gray-900 text-white text-xs px-2 py-1 rounded-md whitespace-nowrap opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity z-50 shadow-lg">
+                Cerrar sesión
+              </span>
+            </button>
+          </div>
+        )}
+      </div>
+    </aside>
   )
 }
